@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -48,6 +49,27 @@ public class EmpController {
 	public HttpStatus deleteEmployee(@PathVariable int id) {
 		this.employeeService.deleteEmployee(id);
 		return HttpStatus.OK;
+	}
+
+	@GetMapping("/employees/sort/asc")
+	public ResponseEntity<List<Employee>> AscSortByFirstName() {
+		return ResponseEntity.ok().body(employeeService.AscSortEmployeesByFirstName());
+	}
+
+	@GetMapping("/employees/sort/desc")
+	public ResponseEntity<List<Employee>> DescSortByFirstName() {
+		return ResponseEntity.ok().body(employeeService.DescSortEmployeesByFirstName());
+	}
+
+	@GetMapping("/employees/sort")
+	public ResponseEntity<List<Employee>> SortByFirstName(@RequestParam("order") String order) {
+
+		return ResponseEntity.ok().body(employeeService.SortEmployeesByFirstName(order));
+	}
+
+	@GetMapping("/employees/search")
+	public ResponseEntity<List<Employee>> searchEmployees(@RequestParam("query") String query) {
+		return ResponseEntity.ok(employeeService.searchEmployees(query));
 	}
 
 }

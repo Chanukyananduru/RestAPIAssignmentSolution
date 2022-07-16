@@ -10,6 +10,7 @@ import com.gl.EmpMgmt.exception.ResourceNotFoundException;
 import com.gl.EmpMgmt.repository.EmpRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
@@ -53,7 +54,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		Optional<Employee> employeeDB = this.empRepository.findById(id);
 		if (employeeDB.isPresent()) {
 			return employeeDB.get();
-		}else {
+		} else {
 			throw new ResourceNotFoundException("Record not found with id: " + id);
 		}
 	}
@@ -63,10 +64,36 @@ public class EmployeeServiceImpl implements EmployeeService {
 		Optional<Employee> employeeDB = this.empRepository.findById(id);
 		if (employeeDB.isPresent()) {
 			this.empRepository.delete(employeeDB.get());
-		}else {
+		} else {
 			throw new ResourceNotFoundException("Record not found with id: " + id);
 		}
 
+	}
+
+	@Override
+	public List<Employee> AscSortEmployeesByFirstName() {
+
+		return this.empRepository.findAll(Sort.by(Sort.Direction.ASC, "firstName"));
+	}
+
+	@Override
+	public List<Employee> DescSortEmployeesByFirstName() {
+
+		return this.empRepository.findAll(Sort.by(Sort.Direction.DESC, "firstName"));
+	}
+	
+	@Override
+	public List<Employee> SortEmployeesByFirstName(String order) {
+		if (order == "asc")
+			return this.empRepository.findAll(Sort.by(Sort.Direction.ASC, "firstName"));
+		else
+			return this.empRepository.findAll(Sort.by(Sort.Direction.DESC, "firstName"));
+	}
+
+	@Override
+	public List<Employee> searchEmployees(String query) {
+
+		return this.empRepository.searchEmployees(query);
 	}
 
 }

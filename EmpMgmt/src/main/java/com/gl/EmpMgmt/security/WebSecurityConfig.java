@@ -30,5 +30,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
             http.headers().frameOptions().disable();
     		
     	}
+     @Autowired
+     public void configureGlobal(AuthenticationManagerBuilder auth)
+             throws Exception
+     {
+         auth.inMemoryAuthentication()
+         	.withUser("admin")
+         	.password("password")
+         	.roles("ADMIN");
+     }
 
 }
